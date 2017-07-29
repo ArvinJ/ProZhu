@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+<!-- 	
+<mvc:annotation-driven>  
+        <mvc:message-converters>  
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter" />  
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />  
+        </mvc:message-converters>  
+</mvc:annotation-driven>
+ -->
+	<!-- 第二种 annotation -->
+	  <mvc:annotation-driven /> 
+	<context:component-scan base-package="com.ahhf.ljxbw.controller" />
+	<!-- 第一种 deafult -->
+	<bean name="/deafult.html"
+		class="com.ahhf.ljxbw.controller.BeanNameUrlHandlerMappingController"></bean>
+	<!-- 将静态文件指定到某个特殊的文件夹中统一处理 -->
+	<mvc:resources location="/resources/" mapping="/resources/**" />
+
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 设置multipartResolver才能完成文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="5000000"></property>
+	</bean>
+
+	<!-- 设置全局异常抛出口提示页面 处理控制器中的异常 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="com.ahhf.ljxbw.utils.UserException">deafult/error</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
